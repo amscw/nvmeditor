@@ -39,6 +39,8 @@ private:
  *
  * TODO: в идеале конкретные продукты сделать template'ами, чтобы не пришлось вручную писать код под каждый регистр.
  * Но это пока не представляется возможным, т.к. рефлексия времени компиляции не позволяет извлекать имена полей структур :(
+ *
+ * TODO: выключить упорядочивание m_mapFields
  */
 class reg_c
 {
@@ -51,12 +53,25 @@ protected:
 
     std::map<std::string, std::uint16_t> m_mapFields;
 
-    void dumpWords() const noexcept;
+    virtual void dumpWords() const noexcept;
 
 public:
     static std::size_t LoadNVMImage(const std::string &strFilename);
     reg_c(const std::string &strName, int word, int count);
+};
 
+/**
+ * @brief The regViewer_c class декоратор для reg_c::dumpWords
+ * Позволяет просматривать все поля регистра
+ */
+class regViewer_c : public reg_c
+{
+protected:
+    virtual void dumpWords() const noexcept;
+
+public:
+    regViewer_c(const std::string &strName, int word, int count) : reg_c(strName, word, count){}
+    virtual ~regViewer_c(){}
 };
 
 

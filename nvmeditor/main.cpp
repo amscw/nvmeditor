@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     }
     regEthernetAddress_c regEthernetAddress;
     regInitControl1_c regInitControl;
+    regPCIeInitConfiguration3_c regPCIeInitConfiguration3;
 
     return a.exec();
 }

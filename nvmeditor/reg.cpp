@@ -65,12 +65,13 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
 reg_c::reg_c(const std::string &strName, int word, int count) :
     m_strRegName(strName), m_nWord(word), m_nCount(count), m_itBase(raw.begin() + m_nWord), m_itEnd(raw.begin() + m_nWord + m_nCount)
 {
-    dumpWords();
+
 }
 
 void reg_c::dumpWords() const noexcept
 {
     std::ostringstream oss;
+
     oss << m_strRegName << "={";
     for (auto it = m_itBase; it < m_itEnd; it++)
     {
@@ -79,5 +80,16 @@ void reg_c::dumpWords() const noexcept
         oss << ", ";
     }
     oss << "}";
+    TRACE_BY_STREAM(oss);
+}
+
+void regViewer_c::dumpWords() const noexcept
+{
+    std::ostringstream oss;
+
+    reg_c::dumpWords();
+    oss << std::endl << std::hex;
+    for (auto &f : m_mapFields)
+        oss << f.first << "=0x" << f.second << ";" << std::endl;
     TRACE_BY_STREAM(oss);
 }
