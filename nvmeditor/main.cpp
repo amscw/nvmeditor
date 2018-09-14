@@ -11,12 +11,12 @@ int main(int argc, char *argv[])
 
     try {
         reg_c::LoadNVMImage("M:\\git\\nvmeditor\\build-nvmeditor-Desktop_Qt_5_10_0_MinGW_32bit-Debug\\debug\\82574l.eep");
+        regInitControl1_c regInitControl;
+        regPCIeInitConfiguration3_c regPCIeInitConfiguration3;
     } catch (regExc_c &exc) {
         exc.ToStderr();
     }
-    regEthernetAddress_c regEthernetAddress;
-    regInitControl1_c regInitControl;
-    regPCIeInitConfiguration3_c regPCIeInitConfiguration3;
+
 
     return a.exec();
 }

@@ -1,6 +1,7 @@
 #include "reg.h"
 #include <fstream>
 #include <regex>
+#include <algorithm>
 
 //-----------------------------------------------------------------------------
 // variables
@@ -9,7 +10,8 @@
 std::string regExc_c::strErrorMessages[] = {
     "cannot open file",
     "parsing error",
-    "no registers found"
+    "NVM image is not loaded or empty"
+    "register not found"
 };
 
 std::vector<std::uint16_t> reg_c::raw;
@@ -17,6 +19,10 @@ std::vector<std::uint16_t> reg_c::raw;
 //-----------------------------------------------------------------------------
 // functions
 //-----------------------------------------------------------------------------
+
+regExc_c::regExc_c(enum errCode_t code, const std::string &strFile, const std::string &strFunction, const std::string &strWhat) noexcept :
+    exc_c(strFile, strFunction, strWhat), m_errCode(code)
+{}
 
 std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
 {
@@ -51,7 +57,7 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
                 ifs.seekg(1, std::ios_base::cur);	// ignore '\n' symbol
             }
         } else {
-            throw (regExc_c(regExc_c::errCode_t::ERR_OPENFILE, __FILE__, __FUNCTION__, strFilename));
+            throw (regExc_c(regExc_c::errCode_t::ERR_OPEN_FILE, __FILE__, __FUNCTION__, strFilename));
         }
     } catch (const /* std::ios_base::failure */ std::exception &e) {
         oss << e.what() << "(" << std::boolalpha << "fail=" << ifs.fail() << ", eof=" << ifs.eof() << ", bad=" << ifs.bad() << ")";
@@ -63,10 +69,13 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
 }
 
 reg_c::reg_c(const std::string &strName, int word, int count) :
-    m_strRegName(strName), m_nWord(word), m_nCount(count), m_itBase(raw.begin() + m_nWord), m_itEnd(raw.begin() + m_nWord + m_nCount)
+    m_strRegName(strName), m_nWord(word), m_nCount(count), m_itBase(raw.begin() + m_nWord), m_itEnd(m_itBase + m_nCount)
 {
-
+    if (raw.size() == 0)
+        throw regExc_c(regExc_c::errCode_t::ERR_NO_IMAGE, __FILE__, __FUNCTION__);
 }
+
+reg_c::~reg_c(){}
 
 void reg_c::dumpWords() const noexcept
 {
@@ -83,13 +92,21 @@ void reg_c::dumpWords() const noexcept
     TRACE_BY_STREAM(oss);
 }
 
+std::uint16_t reg_c::GetFieldValue(const std::string &strFieldname)
+{
+    listIterator_t it = std::find_if(m_listFields.begin(), m_listFields.end(), IsMatchField(strFieldname));
+    if (it == m_listFields.end())
+        throw regExc_c(regExc_c::errCode_t::ERR_REGFIELD_NOT_FOUND, __FILE__, __FUNCTION__, strFieldname);
+    return (*it).second;
+}
+
 void regViewer_c::dumpWords() const noexcept
 {
     std::ostringstream oss;
 
     reg_c::dumpWords();
     oss << std::endl << std::hex;
-    for (auto &f : m_mapFields)
+    for (auto &f : m_listFields)
         oss << f.first << "=0x" << f.second << ";" << std::endl;
     TRACE_BY_STREAM(oss);
 }
