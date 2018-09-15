@@ -40,11 +40,11 @@ void regInitControl1_c::Save() noexcept
 {
     try
     {
-        flatp->FRCSPD = GetFieldValue("FRCSPD");
-        flatp->FD = GetFieldValue("FD");
-        flatp->ILOS = GetFieldValue("ILOS");
-        flatp->LoadSubsystemIDs = GetFieldValue("LoadSubsystemIDs");
-        flatp->LoadDeviceID = GetFieldValue("LoadDeviceID");
+        flatp->FRCSPD = getFieldValue("FRCSPD");
+        flatp->FD = getFieldValue("FD");
+        flatp->ILOS = getFieldValue("ILOS");
+        flatp->LoadSubsystemIDs = getFieldValue("LoadSubsystemIDs");
+        flatp->LoadDeviceID = getFieldValue("LoadDeviceID");
     } catch (regExc_c &exc) {
         exc.ToStderr();
     }
@@ -157,16 +157,16 @@ void regPCIeInitConfiguration3_c::Save() noexcept
 {
     try
     {
-        flatp->Master_Enable = GetFieldValue("Master_Enable");
-        flatp->Scram_dis = GetFieldValue("Scram_dis");
-        flatp->Ack_Nak_Sch = GetFieldValue("Ack_Nak_Sch");
-        flatp->Cache_Lsize = GetFieldValue("Cache_Lsize");
-        flatp->PCIE_Cap = GetFieldValue("PCIE_Cap");
-        flatp->IO_Sup = GetFieldValue("IO_Sup");
-        flatp->Packet_Size = GetFieldValue("Packet_Size");
-        flatp->Act_Stat_PM_Sup = GetFieldValue("Act_Stat_PM_Sup");
-        flatp->Slot_Clock_Cfg = GetFieldValue("Slot_Clock_Cfg");
-        flatp->LoopbackPolarityInversion = GetFieldValue("LoopbackPolarityInversion");
+        flatp->Master_Enable = getFieldValue("Master_Enable");
+        flatp->Scram_dis = getFieldValue("Scram_dis");
+        flatp->Ack_Nak_Sch = getFieldValue("Ack_Nak_Sch");
+        flatp->Cache_Lsize = getFieldValue("Cache_Lsize");
+        flatp->PCIE_Cap = getFieldValue("PCIE_Cap");
+        flatp->IO_Sup = getFieldValue("IO_Sup");
+        flatp->Packet_Size = getFieldValue("Packet_Size");
+        flatp->Act_Stat_PM_Sup = getFieldValue("Act_Stat_PM_Sup");
+        flatp->Slot_Clock_Cfg = getFieldValue("Slot_Clock_Cfg");
+        flatp->LoopbackPolarityInversion = getFieldValue("LoopbackPolarityInversion");
     } catch (regExc_c &exc) {
         exc.ToStderr();
     }

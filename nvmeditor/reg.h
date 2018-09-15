@@ -12,6 +12,7 @@ struct regExc_c : public exc_c
         ERR_PARSE,
         ERR_NO_IMAGE,
         ERR_REGFIELD_NOT_FOUND,
+        ERR_OUT_OF_RANGE,
     } m_errCode;
 
     regExc_c(enum errCode_t code, const std::string &strFile, const std::string &strFunction, const std::string &strWhat = "") noexcept;
@@ -62,6 +63,7 @@ protected:
     list_t m_listFields;
 
     virtual void dumpWords() const noexcept;
+    std::uint16_t getFieldValue(const std::string &strFieldname);
 
 public:
     static std::size_t LoadNVMImage(const std::string &strFilename);
@@ -72,7 +74,8 @@ public:
 
     virtual void ToDefault() noexcept = 0;
     virtual void Save() noexcept = 0;
-    std::uint16_t GetFieldValue(const std::string &strFieldname);
+    std::size_t GetFieldsCount() const noexcept { return m_listFields.size(); }
+    item_t &operator[](int i);
 };
 
 /**

@@ -10,8 +10,9 @@
 std::string regExc_c::strErrorMessages[] = {
     "cannot open file",
     "parsing error",
-    "NVM image is not loaded or empty"
-    "register not found"
+    "NVM image is not loaded or empty",
+    "register not found",
+    "index out of range"
 };
 
 std::vector<std::uint16_t> reg_c::raw;
@@ -92,12 +93,27 @@ void reg_c::dumpWords() const noexcept
     TRACE_BY_STREAM(oss);
 }
 
-std::uint16_t reg_c::GetFieldValue(const std::string &strFieldname)
+std::uint16_t reg_c::getFieldValue(const std::string &strFieldname)
 {
     listIterator_t it = std::find_if(m_listFields.begin(), m_listFields.end(), IsMatchField(strFieldname));
     if (it == m_listFields.end())
         throw regExc_c(regExc_c::errCode_t::ERR_REGFIELD_NOT_FOUND, __FILE__, __FUNCTION__, strFieldname);
     return (*it).second;
+}
+
+reg_c::item_t &reg_c::operator[](int i)
+{
+    std::ostringstream oss;
+    listIterator_t it = m_listFields.begin();
+
+    if (static_cast<std::size_t>(i) >= m_listFields.size())
+    {
+        oss << "[" << i << "], max-" << m_listFields.size()-1;
+        throw regExc_c(regExc_c::errCode_t::ERR_OUT_OF_RANGE, __FILE__, __FUNCTION__, oss.str());
+    }
+
+    std::advance(it, i);
+    return *it;
 }
 
 void regViewer_c::dumpWords() const noexcept
