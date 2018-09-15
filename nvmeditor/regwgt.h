@@ -1,5 +1,5 @@
-#ifndef REGVIEW_H
-#define REGVIEW_H
+#ifndef REGWGT_H
+#define REGWGT_H
 
 #include <QWidget>
 // TODO: убрать отсюда, заменив на incompelte types
@@ -10,8 +10,26 @@
 #include <QVBoxLayout>
 
 #include "reg.h"
-// FOR DEBUG ONLY
-#include "regmap.h"
+
+struct regWidgetExc_c : public exc_c
+{
+    enum class errCode_t : std::uint32_t {
+        ERR_SAVE,
+    } m_errCode;
+
+    regWidgetExc_c(enum errCode_t code, const std::string &strFile, const std::string &strFunction, const std::string &strWhat = "") noexcept;
+
+    const std::string &Msg() const noexcept override { return strErrorMessages[static_cast<int>(m_errCode)]; }
+    void ToStderr() const noexcept override
+    {
+        std::cerr << "WTF:" << m_strFile << "(" << m_strFunction << "):" << strErrorMessages[static_cast<int>(m_errCode)] << "-" << m_strWhat<< std::endl;
+    }
+
+private:
+    static std::string strErrorMessages[];
+};
+
+
 
 /**
  * @brief The regView_c class
@@ -24,7 +42,7 @@ class regWidget_c : public QWidget
 
 private:
     QVector<QPair<QLabel*, QLineEdit*>> m_qFields;
-    QVBoxLayout *m_layout = nullptr;
+    QVBoxLayout *m_playout = nullptr;
 
 protected:
     std::unique_ptr<reg_c> m_reg = nullptr;
@@ -35,27 +53,16 @@ protected:
      * т.к. зависит только от абстракции регистра!
      * (в терминах паттерна "фабричный метод" - это Creator)
      */
-    void Build() noexcept;
+    void build() noexcept;
+    void destroy() noexcept;
 
 public:
     regWidget_c(QWidget *pwgt = nullptr);
     virtual ~regWidget_c();
+
+public slots:
+    void slotSaveReg() noexcept;
+    void slotRestoreReg() noexcept;
 };
 
-class dummyReg_c : public regWidget_c
-{
-    void createReg()
-    {
-        try {
-            std::unique_ptr<reg_c> reg = std::make_unique<regInitControl1_c>();
-            m_reg.swap(reg);
-        } catch (regExc_c &exc) {
-            exc.ToStderr();
-        }
-    }
-public:
-    dummyReg_c();
-    virtual ~dummyReg_c();
-};
-
-#endif // REGVIEW_H
+#endif // REGWGT_H

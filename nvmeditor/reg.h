@@ -72,6 +72,7 @@ public:
     reg_c(const std::string &strName, int word, int count);
     virtual ~reg_c();
 
+    const std::string& Name() const noexcept {return m_strRegName; }
     virtual void ToDefault() noexcept = 0;
     virtual void Save() noexcept = 0;
     std::size_t GetFieldsCount() const noexcept { return m_listFields.size(); }
