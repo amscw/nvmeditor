@@ -27,8 +27,7 @@ SOURCES += \
         mainwindow.cpp \
     reg.cpp \
     regmap.cpp \
-    regwgt.cpp \
-    regview.cpp
+    regwgt.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -36,8 +35,7 @@ HEADERS += \
     tracers.hpp \
     exc.h \
     regmap.h \
-    regwgt.h \
-    regview.h
+    regwgt.h
 
 FORMS += \
         mainwindow.ui

@@ -33,7 +33,7 @@ private:
 
 /**
  * @brief The regView_c class
- * Увы, Qt-шные классы не могут быть template'ами. Придется прописывать каждого наследника :(
+ * Увы, Qt-шные классы не могут быть template'ами.
  */
 
 class regWidget_c : public QWidget
@@ -63,6 +63,32 @@ public:
 public slots:
     void slotSaveReg() noexcept;
     void slotRestoreReg() noexcept;
+};
+
+template<typename regType>
+class regWgtViewer_c : public regWidget_c
+{
+    void createReg()
+    {
+        std::unique_ptr<reg_c> p;
+        try {
+            p = std::make_unique<regType>();
+        } catch (regExc_c &) {
+            throw ;
+        }
+        m_reg.swap(p);
+    }
+
+public:
+    regWgtViewer_c(QWidget *pwgt = nullptr) : regWidget_c(pwgt)
+    {
+        try {
+            createReg();
+        } catch (regExc_c &) {
+            throw;
+        }
+        build();
+    }
 };
 
 #endif // REGWGT_H
