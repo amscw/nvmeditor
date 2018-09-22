@@ -23,9 +23,11 @@ private:
     ResizableStackedWidget *m_pstk = nullptr;
 
     void buildStackedWidget() noexcept;
+    void destroyStackedWidget() noexcept;
 
 private slots:
     void slotOpenFile() noexcept;
+    void slotRegIndexChanged(int) noexcept;
 };
 
 #endif // MAINWINDOW_H

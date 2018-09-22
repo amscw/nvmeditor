@@ -43,6 +43,7 @@ class regWidget_c : public QWidget
 private:
     QVector<QPair<QLabel*, QLineEdit*>> m_qFields;
     QVBoxLayout *m_playout = nullptr;
+    const std::string fakeName = "not created";
 
 protected:
     std::unique_ptr<reg_c> m_reg = nullptr;
@@ -59,6 +60,12 @@ protected:
 public:
     regWidget_c(QWidget *pwgt = nullptr);
     virtual ~regWidget_c();
+
+    const std::string &RegName() const noexcept {
+        if (m_reg != nullptr)
+            return m_reg->Name();
+        else return fakeName;
+    }
 
 public slots:
     void slotSaveReg() noexcept;

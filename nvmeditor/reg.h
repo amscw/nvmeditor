@@ -75,11 +75,12 @@ public:
     virtual ~reg_c();
 
     const std::string& Name() const noexcept {return m_strRegName; }
+    const std::string &GetFilename() const noexcept { return filename; }
     virtual void ToDefault() noexcept = 0;
     virtual void Save() noexcept = 0;
     std::size_t GetFieldsCount() const noexcept { return m_listFields.size(); }
     item_t &operator[](int i);
-    const std::string &GetFilename() const noexcept { return filename; }
+
 };
 
 /**

@@ -5,6 +5,11 @@
 
 class ResizableStackedWidget : public QStackedWidget
 {
+    Q_OBJECT
+
+private:
+    int m_iCurrentIdx;
+
 public:
     ResizableStackedWidget(QWidget *parent = nullptr);
     int addWidget(QWidget *widget);
