@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <list>
+#include <memory>
 #include "exc.h"
 
 struct regExc_c : public exc_c
@@ -42,6 +43,7 @@ private:
 class reg_c
 {
     static std::vector<std::uint16_t> raw;
+    static std::string filename;
 
 protected:
     using item_t = std::pair<std::string, std::uint16_t>;
@@ -77,6 +79,7 @@ public:
     virtual void Save() noexcept = 0;
     std::size_t GetFieldsCount() const noexcept { return m_listFields.size(); }
     item_t &operator[](int i);
+    const std::string &GetFilename() const noexcept { return filename; }
 };
 
 /**

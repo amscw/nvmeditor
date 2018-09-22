@@ -1,0 +1,16 @@
+#ifndef RESIZABLESTACKEDWIDGET_H
+#define RESIZABLESTACKEDWIDGET_H
+
+#include <QStackedWidget>
+
+class ResizableStackedWidget : public QStackedWidget
+{
+public:
+    ResizableStackedWidget(QWidget *parent = nullptr);
+    int addWidget(QWidget *widget);
+
+public slots:
+    void onCurrentChanged(int index);
+};
+
+#endif // RESIZABLESTACKEDWIDGET_H

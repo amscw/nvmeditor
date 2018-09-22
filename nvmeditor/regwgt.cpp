@@ -48,7 +48,7 @@ void regWidget_c::build() noexcept
             destroy();
             return;
         }
-        pLe->setMaximumWidth(40);   // TODO: вычислить по шрифту так, чтобы влезло "FFFF"
+        pLe->setMaximumWidth(60);   // TODO: вычислить по шрифту так, чтобы влезло "FFFF"
         pLe->setAlignment(Qt::AlignmentFlag::AlignRight);
 
         // и пихаем ее в компоновку

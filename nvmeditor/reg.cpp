@@ -16,6 +16,7 @@ std::string regExc_c::strErrorMessages[] = {
 };
 
 std::vector<std::uint16_t> reg_c::raw;
+std::string reg_c::filename;
 
 //-----------------------------------------------------------------------------
 // functions
@@ -37,6 +38,8 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
         ifs.open(strFilename, std::ios_base::binary);   // TODO: any exceptions here?
         if (ifs.is_open())
         {
+            raw.clear();
+
             for(std::string str;;)
             {
                 // get line
@@ -66,6 +69,7 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
     }
     oss << "found: " << raw.size() << " words";
     TRACE_BY_STREAM(oss);
+    reg_c::filename = strFilename;
     return raw.size();
 }
 

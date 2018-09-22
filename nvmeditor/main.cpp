@@ -12,15 +12,15 @@ int main(int argc, char *argv[])
 
 
 
-    regWgtViewer_c<regInitControl1_c> *pInitControl1;
+//    regWgtViewer_c<regInitControl1_c> *pInitControl1;
 
-    try {
-        reg_c::LoadNVMImage("M:\\git\\nvmeditor\\build-nvmeditor-Desktop_Qt_5_10_0_MinGW_32bit-Debug\\debug\\82574l.eep");
-        pInitControl1 = new regWgtViewer_c<regInitControl1_c>;
-        pInitControl1->show();
-    } catch (regExc_c &exc) {
-        exc.ToStderr();
-    }
+//    try {
+//        reg_c::LoadNVMImage("M:\\git\\nvmeditor\\build-nvmeditor-Desktop_Qt_5_10_0_MinGW_32bit-Debug\\debug\\82574l.eep");
+//        pInitControl1 = new regWgtViewer_c<regInitControl1_c>;
+//        pInitControl1->show();
+//    } catch (regExc_c &exc) {
+//        exc.ToStderr();
+//    }
 
 
     w.show();
