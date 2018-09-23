@@ -51,9 +51,19 @@ void MainWindow::slotOpenFile() noexcept
             for (int i = 0; i < m_pstk->count(); i++)
                 ui->cbName->addItem(QString::fromStdString(qobject_cast<regWidget_c*>(m_pstk->widget(i))->RegName()));
         }
-
-
     }
+}
+
+void MainWindow::connectCurrentReg() noexcept
+{
+    connect(ui->pbDefault, SIGNAL(clicked()), m_pstk->currentWidget(), SLOT(slotRestoreReg()));
+    connect(ui->pbOk, SIGNAL(clicked()), m_pstk->currentWidget(), SLOT(slotSaveReg()));
+}
+
+void MainWindow::disconnectCurrentReg() noexcept
+{
+    disconnect(ui->pbDefault, SIGNAL(clicked()), m_pstk->currentWidget(), SLOT(slotRestoreReg()));
+    disconnect(ui->pbOk, SIGNAL(clicked()), m_pstk->currentWidget(), SLOT(slotSaveReg()));
 }
 
 void MainWindow::buildStackedWidget() noexcept
@@ -71,11 +81,12 @@ void MainWindow::buildStackedWidget() noexcept
     }
     pstk->setCurrentIndex(0);
     m_pstk = pstk.release();
+    connectCurrentReg();
 }
 
 void MainWindow::destroyStackedWidget() noexcept
 {
-    // cleanup
+    // NB: все сигнально-слотовые связи разорвутся автоматически
     if (m_pstk != nullptr)
     {
         for (int i = 0; i < m_pstk->count(); i++)
@@ -92,7 +103,9 @@ void MainWindow::slotRegIndexChanged(int index) noexcept
 {
     if (m_pstk != nullptr)
     {
+        disconnectCurrentReg();
         m_pstk->setCurrentIndex(index);
+        connectCurrentReg();
     }
 }
 

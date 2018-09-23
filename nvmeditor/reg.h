@@ -69,12 +69,12 @@ protected:
 
 public:
     static std::size_t LoadNVMImage(const std::string &strFilename);
-    // static void SaveNVMImage(const std::string &strFilename);
+    static void SaveNVMImage(const std::string &strFilename = filename);
 
     reg_c(const std::string &strName, int word, int count);
     virtual ~reg_c();
 
-    const std::string& Name() const noexcept {return m_strRegName; }
+    const std::string &Name() const noexcept {return m_strRegName; }
     const std::string &GetFilename() const noexcept { return filename; }
     virtual void ToDefault() noexcept = 0;
     virtual void Save() noexcept = 0;

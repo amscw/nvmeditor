@@ -24,6 +24,8 @@ private:
 
     void buildStackedWidget() noexcept;
     void destroyStackedWidget() noexcept;
+    void connectCurrentReg() noexcept;
+    void disconnectCurrentReg() noexcept;
 
 private slots:
     void slotOpenFile() noexcept;

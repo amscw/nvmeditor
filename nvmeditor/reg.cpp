@@ -73,6 +73,12 @@ std::size_t reg_c::LoadNVMImage(const std::string &strFilename)
     return raw.size();
 }
 
+void reg_c::SaveNVMImage(const std::string &strFilename)
+{
+    std::ostringstream oss;
+    std::ofstream ofs;
+}
+
 reg_c::reg_c(const std::string &strName, int word, int count) :
     m_strRegName(strName), m_nWord(word), m_nCount(count), m_itBase(raw.begin() + m_nWord), m_itEnd(m_itBase + m_nCount)
 {
