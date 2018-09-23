@@ -10,6 +10,7 @@ struct regExc_c : public exc_c
 {
     enum class errCode_t : std::uint32_t {
         ERR_OPEN_FILE,
+        ERR_SAVE_FILE,
         ERR_PARSE,
         ERR_NO_IMAGE,
         ERR_REGFIELD_NOT_FOUND,

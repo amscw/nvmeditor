@@ -29,6 +29,7 @@ private:
 
 private slots:
     void slotOpenFile() noexcept;
+    void slotSaveFile() noexcept;
     void slotRegIndexChanged(int) noexcept;
 };
 

@@ -9,10 +9,11 @@
 
 std::string regExc_c::strErrorMessages[] = {
     "cannot open file",
+    "cannot save to file",
     "parsing error",
     "NVM image is not loaded or empty",
     "register not found",
-    "index out of range"
+    "index out of range",
 };
 
 std::vector<std::uint16_t> reg_c::raw;
@@ -77,6 +78,27 @@ void reg_c::SaveNVMImage(const std::string &strFilename)
 {
     std::ostringstream oss;
     std::ofstream ofs;
+
+    // all exceptions are enabled
+    ofs.exceptions(std::ios_base::failbit | std::ios_base::eofbit | std::ios_base::badbit);
+    try {
+        ofs.open(strFilename, std::ios_base::binary | std::ios_base::trunc);
+        if (ofs.is_open())
+        {
+            ofs << std::hex << std::uppercase << std::setfill('0');
+            for (std::size_t i = 0; i < raw.size(); i++)
+            {
+                if (i % 8 == 0 && i > 0)
+                    ofs << "\r\n";
+                ofs << std::setw(4) << raw[i] << std::setw(1) << " ";
+            }
+        } else {
+            throw (regExc_c(regExc_c::errCode_t::ERR_SAVE_FILE, __FILE__, __FUNCTION__, strFilename));
+        }
+    } catch (const /* std::ios_base::failure */ std::exception &e) {
+        oss << e.what() << "(" << std::boolalpha << "fail=" << ofs.fail() << ", eof=" << ofs.eof() << ", bad=" << ofs.bad() << ")";
+        TRACE_BY_STREAM(oss);
+    }
 }
 
 reg_c::reg_c(const std::string &strName, int word, int count) :

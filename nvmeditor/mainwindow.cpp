@@ -4,6 +4,7 @@
 #include <QDir>
 #include <iostream>
 #include <QFileDialog>
+#include <QMessageBox>
 #include "resizablestackedwidget.h"
 
 #include "reg.h"
@@ -19,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->cbName, SIGNAL(currentIndexChanged(int)), SLOT(slotRegIndexChanged(int)));
     connect(ui->maOpen, SIGNAL(triggered(bool)), SLOT(slotOpenFile()));
+    connect(ui->maSave, SIGNAL(triggered(bool)), SLOT(slotSaveFile()));
 }
 
 MainWindow::~MainWindow()
@@ -29,7 +31,7 @@ MainWindow::~MainWindow()
 void MainWindow::slotOpenFile() noexcept
 {
     QString qstr = QFileDialog::getOpenFileName(this, "Загрузить NVM-образ", m_qstrCurrentPath, "*.eep");
-    if (qstr != "")
+    if (!qstr.isEmpty())
     {
         // удаляем все
         ui->cbName->clear();
@@ -51,6 +53,22 @@ void MainWindow::slotOpenFile() noexcept
             for (int i = 0; i < m_pstk->count(); i++)
                 ui->cbName->addItem(QString::fromStdString(qobject_cast<regWidget_c*>(m_pstk->widget(i))->RegName()));
         }
+    }
+}
+
+void MainWindow::slotSaveFile() noexcept
+{
+    QString qstr = QFileDialog::getSaveFileName(this, "Сохранить NVM-образ", m_qstrCurrentPath, "*.eep");
+    if (!qstr.isEmpty())
+    {
+        try {
+            reg_c::SaveNVMImage(qstr.toStdString());
+        } catch (regExc_c &exc) {
+            exc.ToStderr();
+        }
+        QString msg{"Образ успешно сохранен в файл:\r\n"};
+        msg.append(qstr);
+        QMessageBox::information(this, "Сохранено ок", msg);
     }
 }
 
