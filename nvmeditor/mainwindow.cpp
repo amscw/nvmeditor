@@ -65,6 +65,7 @@ void MainWindow::slotSaveFile() noexcept
             reg_c::SaveNVMImage(qstr.toStdString());
         } catch (regExc_c &exc) {
             exc.ToStderr();
+            return;
         }
         QString msg{"Образ успешно сохранен в файл:\r\n"};
         msg.append(qstr);
